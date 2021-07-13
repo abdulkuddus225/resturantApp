@@ -14,25 +14,24 @@ integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0Ec
     <title>Home</title>
 </head>
 <body onload="listMenu(); listTables();">
+  <div class="container" style="height: 50px;"></div>
     <div class="container">
         <div class="row">
-            <div class="col-sm-4">
-                <h1>Tables</h1>
+            <div class="col-sm-3">
+                <h1 style="text-align: right;">Tables</h1>
                 <div class="input-group">
-                  <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-                  aria-describedby="search-addon" id="searchItemText" />
-                <button type="button" class="btn btn-outline-primary" id="searchItemBtn" onclick="searchTables()">search</button>
+                  <input type="search" class="form-control rounded" placeholder="Search Table" aria-label="Search"
+                  aria-describedby="search-addon" id="searchItemText" onkeyup="searchTables()"/>
                   </div>
                   <div id="tablesAvailable"></div>
             </div>
-            <div class="col-sm-1" style="border-right: 2px solid #333;">
+            <div class="col-sm-1" style="border-right: 3px solid #333;">
             </div>
-            <div class="col-sm-7" >
-                <h1>Menu</h1>
+            <div class="col-sm-8" >
+                <h1 style="text-align: right;">Menu</h1>
                 <div class="input-group">
-                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-                      aria-describedby="search-addon" id="searchMenuText" />
-                    <button type="button" class="btn btn-outline-primary" id="searchMenuBtn" onclick="searchMenu()">search</button>
+                    <input type="search" class="form-control rounded" placeholder="Search menu..by course..by food" aria-label="Search"
+                      aria-describedby="search-addon" id="searchMenuText" onkeyup="searchMenu()"/>
                   </div>
                   <div id="menuItems">
                   </div>
@@ -62,6 +61,7 @@ integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0Ec
               <th scope="col">Number of servings</th>
               <th scope="col">Delete Item</th>
               <input type="hidden" id="hiddenID">
+              <input type="hidden" id="hiddenQty" />
             </tr>
           </thead>
           </table>
@@ -71,7 +71,7 @@ integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0Ec
       </div>
       <div class="modal-footer">  
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="removeBillData">Close</button>
-        <button type="button" class="btn btn-primary" id="closeSession">Close session(Generate Bill)</button>
+        <button type="button" class="btn btn-primary" id="closeSession" data-bs-dismiss="modal">Close session(Generate Bill)</button>
       </div>
     </div>
   </div>
