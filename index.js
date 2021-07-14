@@ -76,9 +76,6 @@ function listMenu() {
 
     const menuDisplay = document.getElementById('menuItems');
     const search = document.getElementById('searchMenuText').value;
-    console.log(search)
-
-
     const div = document.createElement('div');
     div.setAttribute("id", "listMenuItems")
     menu.forEach(element => {
@@ -134,12 +131,21 @@ function listTables() {
         itemsTotal.innerText = "Total items: ";
         const tableNumber = document.createElement('h3');
         tableNumber.innerText = "Table Number: " + element.table_no;
+        // let total = document.getElementById('totalSum').innerText
+        // total = total.substring(7);
+        totalItemPrice = calculateTotal(element.table_no);
         orders.forEach(order => {
             if (order.table_no == element.table_no) {
-                totalItemPrice += order.item_price;
                 totalItemCount += 1;
-                tableTotal.innerText = "Total amount: " + totalItemPrice * order.item_qty;
-                itemsTotal.innerText = "Total items: " + totalItemCount;
+                if(totalItemCount == 1){
+                    tableTotal.innerText = "Total amount: " + totalItemPrice;
+                    itemsTotal.innerText = "Total items: " + totalItemCount;
+                }
+                else{
+                    tableTotal.innerText = "Total amount: " + totalItemPrice;
+                    itemsTotal.innerText = "Total items: " + totalItemCount;
+                }
+
             }
         })
         innerDiv.appendChild(tableNumber)
@@ -176,8 +182,8 @@ function drop_handler(ev) {
     ev.preventDefault();
     ev.dataTransfer.clearData();
     // Get the data, which is the id of the drop targetge
-    var tableNumber = parseInt(ev.currentTarget.id);
-    var itemId = ev.dataTransfer.getData("text");
+    let tableNumber = parseInt(ev.currentTarget.id);
+    let itemId = ev.dataTransfer.getData("text");
     const itemIndex = menu.findIndex(f => f.item_id == itemId);
     const item = menu[itemIndex];
     let flag = true;
@@ -233,6 +239,10 @@ function generateBill(num) {
             qty.onchange = function(){
                 qty.setAttribute("value", qty.value);
                 order.item_qty = qty.value;
+                totalItemPrice = calculateTotal(num);
+                let totalSum = document.getElementById('totalSum');
+                totalSum.innerText = "Total: " + totalItemPrice;
+                listTables()
             };
             let td5 = document.createElement('td');
             let btn = document.createElement('button');
@@ -252,22 +262,35 @@ function generateBill(num) {
         }
         allOrders.appendChild(tr);
     })
+
     for (const iterator of generateBill.children) {
         iterator.remove();
       }
       generateBill.appendChild(allOrders);
-    orders.forEach(order => {
-        if (order.table_no == num) {
-            totalItemPrice += order.item_price * order.item_qty;
-        }
-    })
 
+    // orders.forEach(order => {
+    //     if (order.table_no == num) {
+    //         totalItemPrice += (order.item_price * order.item_qty);
+    //     }
+    // })
+
+    totalItemPrice = calculateTotal(num);
     let totalSum = document.getElementById('totalSum');
     totalSum.innerText = "Total: " + totalItemPrice;
     listTables();
-
 }
 
+
+function calculateTotal(table){
+
+    let tableSum = 0;
+    orders.forEach(order => {
+        if(order.table_no == table){
+            tableSum += order.item_price * order.item_qty;
+        }
+    })
+    return tableSum;
+}
 
 function deleteItem(tableNo, itemNo) {
     const index = orders.findIndex((g) => g.item_id == itemNo && g.table_no == tableNo);
@@ -279,32 +302,34 @@ function deleteItem(tableNo, itemNo) {
 
 }
 
-function searchMenu() {
-
-    var input, filter, ul, li, a, i, txtValue;
-    input = document.getElementById('searchMenuText');
-    filter = input.value.toUpperCase();
+searchMenuText.addEventListener('keyup', (e) => {
+    const target = e.target.value;
     OuterDiv = document.getElementById("listMenuItems");
     innderDiv = OuterDiv.getElementsByTagName('div');
-    for (let i = 0; i < innderDiv.length; i++) {
-        a = innderDiv[i].getElementsByTagName("h3")[0];
-        let course = document.getElementById('courseType');
-        txtValue = a.innerText || a.textContent;
-        let courseType =  course.innerText
-        courseType = courseType.toUpperCase();
-        if (txtValue.toUpperCase().indexOf(filter) > -1 || courseType == filter) {
-            innderDiv[i].style.display = "block";
-        }
-        else {
-            innderDiv[i].style.display = "none";
-        }
-    }
+    const filteredItems = menu.filter(items => {
+        return items.item_name.includes(target) || items.course_type.includes(target) || items.item_price == (target);
+    });
+    displayItems(filteredItems)
+})
 
+const displayItems = (items) => {
+    const menuItemsList = document.getElementById('listMenuItems');
+    const htmlString = items
+    .map((item) => {
+        return `<div id="${item.item_id}" draggable="true" ondragstart="dragstart_handler(event);" 
+        style="min-height:100px; margin-top:10px; border:1px solid; padding: 10px; box-shadow: rgb(136, 136, 136) 5px 10px;">
+        <h3>${item.item_name}</h3>
+        <p>Price: ${item.item_price}</p>
+        <p id="courseType" style="display: none;">${item.course_type}</p>
+        </div>`;
+    })
+    .join(" ");
+    menuItemsList.innerHTML = htmlString;
 }
 
 function searchTables() {
 
-    var input, filter, ul, li, a, i, txtValue;
+    let input, filter, ul, li, a, i, txtValue;
     input = document.getElementById('searchItemText');
     filter = input.value.toUpperCase();
     OuterDiv = document.getElementById("listTableItems");
@@ -332,7 +357,7 @@ function closeSessionfunc(){
     console.log(hiddenID)
     orders.forEach((order,index) => {
         if(order.table_no == hiddenID){
-            orders.splice(index);
+            orders.splice(index,1);
         }
     })
     listTables();

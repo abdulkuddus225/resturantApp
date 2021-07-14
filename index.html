@@ -12,26 +12,37 @@ rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3
 integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 
     <title>Home</title>
+    <style>
+      .well {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+body, html {
+  height: 100%;
+  width: 100%;
+}
+    </style>
 </head>
 <body onload="listMenu(); listTables();">
-  <div class="container" style="height: 50px;"></div>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-3">
-                <h1 style="text-align: right;">Tables</h1>
+  <div class="container-fluid" style="height: 20px;"></div>
+    <div class="container-fluid">
+        <div class="row " >
+            <div class="col-sm-2"> 
+                <h1  style="text-align: right;">Tables</h1>
                 <div class="input-group">
                   <input type="search" class="form-control rounded" placeholder="Search Table" aria-label="Search"
-                  aria-describedby="search-addon" id="searchItemText" onkeyup="searchTables()"/>
+                  aria-describedby="search-addon" id="searchItemText" onkeyup="searchTables()"  />
                   </div>
                   <div id="tablesAvailable"></div>
             </div>
-            <div class="col-sm-1" style="border-right: 3px solid #333;">
+            <div class="col-sm-1" style="border-right: 3px solid #333; width: 5px;">
             </div>
-            <div class="col-sm-8" >
+            <div class="col-sm-9" style="width: 80%;">
                 <h1 style="text-align: right;">Menu</h1>
                 <div class="input-group">
                     <input type="search" class="form-control rounded" placeholder="Search menu..by course..by food" aria-label="Search"
-                      aria-describedby="search-addon" id="searchMenuText" onkeyup="searchMenu()"/>
+                      aria-describedby="search-addon" id="searchMenuText"/>
                   </div>
                   <div id="menuItems">
                   </div>
@@ -61,7 +72,6 @@ integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0Ec
               <th scope="col">Number of servings</th>
               <th scope="col">Delete Item</th>
               <input type="hidden" id="hiddenID">
-              <input type="hidden" id="hiddenQty" />
             </tr>
           </thead>
           </table>
@@ -70,7 +80,7 @@ integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0Ec
         <p id="totalSum"></p>
       </div>
       <div class="modal-footer">  
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="removeBillData">Close</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="removeBillData" >Close</button>
         <button type="button" class="btn btn-primary" id="closeSession" data-bs-dismiss="modal">Close session(Generate Bill)</button>
       </div>
     </div>
