@@ -268,12 +268,6 @@ function generateBill(num) {
       }
       generateBill.appendChild(allOrders);
 
-    // orders.forEach(order => {
-    //     if (order.table_no == num) {
-    //         totalItemPrice += (order.item_price * order.item_qty);
-    //     }
-    // })
-
     totalItemPrice = calculateTotal(num);
     let totalSum = document.getElementById('totalSum');
     totalSum.innerText = "Total: " + totalItemPrice;
@@ -303,11 +297,11 @@ function deleteItem(tableNo, itemNo) {
 }
 
 searchMenuText.addEventListener('keyup', (e) => {
-    const target = e.target.value;
+    const target = e.target.value.toUpperCase();
     OuterDiv = document.getElementById("listMenuItems");
     innderDiv = OuterDiv.getElementsByTagName('div');
     const filteredItems = menu.filter(items => {
-        return items.item_name.includes(target) || items.course_type.includes(target) || items.item_price == (target);
+        return items.item_name.toUpperCase().includes(target) || items.course_type.toUpperCase().includes(target) || items.item_price == (target);
     });
     displayItems(filteredItems)
 })
